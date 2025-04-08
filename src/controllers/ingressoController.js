@@ -2,8 +2,9 @@ const ingressoModel = require("../models/ingressoModel");
 
 const getAllIngresso = async (req, res) => {
     try {
-        const ingressos = await ingressoModel.getIngresso();
-        res.json(ingressos);
+        const { evento } = req.query;
+        const ingresso = await ingressoModel.getIngresso(evento);
+        res.json(ingresso);
     } catch (error) {
         res.status(404).json({ message: "Erro ao buscar por ingressos." });
     }

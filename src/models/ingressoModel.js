@@ -1,8 +1,16 @@
 const pool = require("../config/database");
 
-const getIngresso = async () => {
-    const result = await pool.query("SELECT * FROM ingressos");
-    return result.rows
+const getIngresso = async (evento) => {
+    if (!evento) {
+        const result = await pool.query("SELECT * FROM ingressos");
+        return result.rows;
+    } else {
+        const result = await pool.query(
+            "SELECT * FROM ingressos WHERE evento ILIKE $1",
+            [`%${evento}%`]
+        );
+        return result.rows;
+    }
 };
 
 const getIngressoById = async (id) => {
@@ -34,4 +42,4 @@ const deleteIngresso = async (id) => {
     return {message: "Ingresso deletado com sucesso"}
 }
 
-module.exports = { getIngresso, getIngressoById, createIngresso, updateIngresso, deleteIngresso, };
+module.exports = { getIngresso, getIngressoById, createIngresso, updateIngresso, deleteIngresso };
